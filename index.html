@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MVM Senior Secondary School Mankapur near ITI Gonda — school gallery, registration and information.">
+  <meta name="theme-color" content="#0f172a">
+  <title>MVM Senior Secondary School Mankapur</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #172033;
+      background: #f6f8fc;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .container { width: min(1120px, 92%); margin: auto; }
+
+    /* Navigation */
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid #e7eaf0;
+    }
+    .nav-inner {
+      min-height: 70px; display: flex; align-items: center; justify-content: space-between;
+      gap: 24px;
+    }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.2px; }
+    .brand-mark {
+      width:42px; height:42px; display:grid; place-items:center; border-radius:13px;
+      background: linear-gradient(135deg,#2563eb,#7c3aed); color:white; font-weight:900;
+      box-shadow: 0 8px 20px rgba(37,99,235,.25);
+    }
+    .nav-links { display:flex; gap:8px; list-style:none; }
+    .nav-links a { padding:10px 14px; border-radius:10px; color:#526078; font-weight:600; }
+    .nav-links a:hover { background:#eef2ff; color:#4338ca; }
+
+    /* Hero */
+    .hero {
+      min-height: 600px; display:grid; place-items:center; text-align:center;
+      color:white; position:relative; overflow:hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(59,130,246,.35), transparent 32%),
+        radial-gradient(circle at 80% 70%, rgba(124,58,237,.35), transparent 34%),
+        linear-gradient(135deg,#0f172a,#1e293b 55%,#312e81);
+    }
+    .hero::before {
+      content:""; position:absolute; inset:0;
+      background-image: linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+                        linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+      background-size: 34px 34px;
+    }
+    .hero-content { position:relative; z-index:1; max-width:850px; padding:90px 0; }
+    .eyebrow {
+      display:inline-flex; padding:7px 13px; border:1px solid rgba(255,255,255,.2);
+      background:rgba(255,255,255,.08); border-radius:999px; font-size:.85rem; font-weight:700;
+      margin-bottom:20px;
+    }
+    .hero h1 { font-size:clamp(2.4rem,6vw,5rem); line-height:1.05; letter-spacing:-2px; }
+    .hero p { margin:20px auto 30px; max-width:680px; color:#dbeafe; font-size:1.12rem; }
+    .buttons { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; padding:13px 20px;
+      border-radius:12px; font-weight:800; border:1px solid transparent; transition:.2s;
+    }
+    .btn-primary { background:white; color:#172033; }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 25px rgba(0,0,0,.18); }
+    .btn-ghost { border-color:rgba(255,255,255,.28); color:white; background:rgba(255,255,255,.06); }
+    .btn-ghost:hover { background:rgba(255,255,255,.12); }
+
+    /* Sections */
+    section { padding:85px 0; }
+    .section-head { text-align:center; margin-bottom:38px; }
+    .section-head span { color:#4f46e5; font-size:.8rem; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; }
+    .section-head h2 { font-size:clamp(2rem,4vw,3rem); margin:8px 0; letter-spacing:-1px; }
+    .section-head p { color:#64748b; max-width:680px; margin:auto; }
+
+    .intro-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:24px; }
+    .panel {
+      background:white; border:1px solid #e8ebf2; border-radius:22px; padding:30px;
+      box-shadow:0 15px 45px rgba(15,23,42,.06);
+    }
+    .quote { font-size:1.25rem; font-weight:700; color:#334155; }
+    .quote small { display:block; margin-top:14px; color:#6366f1; font-size:.85rem; }
+
+    .stats { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+    .stat { padding:22px; background:#f8fafc; border-radius:16px; border:1px solid #eef2f7; }
+    .stat strong { display:block; font-size:1.7rem; color:#4f46e5; }
+    .stat span { color:#64748b; font-size:.9rem; }
+
+    /* Gallery */
+    .gallery { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .gallery-card {
+      margin:0; overflow:hidden; border-radius:18px; background:#fff; border:1px solid #e7eaf0;
+      box-shadow:0 10px 30px rgba(15,23,42,.07); transition:.25s;
+    }
+    .gallery-card:hover { transform:translateY(-5px); box-shadow:0 18px 40px rgba(15,23,42,.13); }
+    .gallery-card img { width:100%; height:250px; object-fit:cover; transition:.45s; }
+    .gallery-card:hover img { transform:scale(1.05); }
+    .gallery-card figcaption { padding:12px 15px; font-weight:700; color:#475569; }
+
+    /* Form */
+    .form-grid input[type="text"],
+    .form-grid input[type="number"],
+    .form-grid input[type="tel"] {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid #dbe1ea;
+      border-radius: 12px;
+      outline: none;
+      font: inherit;
+      background: #fbfcfe;
+      display: block;
+    }
+    .form-grid input[type="text"]:focus,
+    .form-grid input[type="number"]:focus,
+    .form-grid input[type="tel"]:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 4px rgba(99,102,241,.1);
+    }
+
+    .form-wrap { max-width:760px; margin:auto; }
+    form { display:grid; gap:18px; }
+    .form-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:16px; }
+    label { display:block; font-weight:750; margin-bottom:7px; color:#334155; }
+    input[type="text"], input[type="number"] {
+      width:100%; padding:13px 14px; border:1px solid #dbe1ea; border-radius:12px;
+      outline:none; font:inherit; background:#fbfcfe;
+    }
+    input:focus { border-color:#6366f1; box-shadow:0 0 0 4px rgba(99,102,241,.1); }
+    fieldset { border:1px solid #e7eaf0; border-radius:16px; padding:18px; }
+    legend { padding:0 8px; font-weight:800; }
+    .choice { display:flex; gap:9px; align-items:center; margin:9px 0; color:#475569; }
+    .submit-row { display:flex; gap:12px; flex-wrap:wrap; }
+    button {
+      border:0; cursor:pointer; padding:13px 20px; border-radius:12px; font:inherit; font-weight:800;
+    }
+    .submit { background:#4f46e5; color:white; }
+    .reset { background:#eef2f7; color:#334155; }
+
+    footer {
+      background:#0f172a; color:#cbd5e1; padding:35px 0; text-align:center;
+    }
+    footer strong { color:white; }
+
+    @media (max-width: 800px) {
+      .nav-links { display:none; }
+      .intro-grid, .gallery { grid-template-columns:1fr 1fr; }
+      .gallery-card img { height:220px; }
+    }
+    @media (max-width: 560px) {
+      section { padding:65px 0; }
+      .intro-grid, .gallery, .form-grid { grid-template-columns:1fr; }
+      .hero { min-height:540px; }
+      .hero h1 { letter-spacing:-1px; }
+      .gallery-card img { height:240px; }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="#home">
+        <span class="brand-mark">M</span>
+        <span>MVM Mankapur</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#register">Register</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="container hero-content">
+      <div class="eyebrow">MVM Senior Secondary School • Mankapur, Gonda</div>
+      <h1>Dream Big.<br>Learn. Lead. Achieve.</h1>
+      <p>Welcome to MVM Senior Secondary School Mankapur near ITI Gonda — a place to learn, grow and build the future.</p>
+      <div class="buttons">
+        <a href="#gallery" class="btn btn-primary">Explore Gallery →</a>
+        <a href="#register" class="btn btn-ghost">Registration Form</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <span>Our School</span>
+          <h2>MVM Mankapur at a Glance</h2>
+          <p>Learning today, leading tomorrow — with curiosity, involvement and a strong vision for the future.</p>
+        </div>
+        <div class="intro-grid">
+          <div class="panel">
+            <p class="quote">“Tell me I forget. Teach me I remember. Involve me and I learn.”</p>
+            <small class="quote">— JAI GURU DEV</small>
+          </div>
+          <div class="panel">
+            <div class="stats">
+              <div class="stat"><strong>01</strong><span>School Gallery</span></div>
+              <div class="stat"><strong>24/7</strong><span>Online Access</span></div>
+              <div class="stat"><strong>∞</strong><span>Dream Big</span></div>
+              <div class="stat"><strong>100%</strong><span>Learning Spirit</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="container">
+        <div class="section-head">
+          <span>Memories</span>
+          <h2>School Gallery</h2>
+          <p>Explore the moments and memories from MVM Mankapur.</p>
+        </div>
+        <div class="gallery">
+          
+      <figure class="gallery-card">
+        <img src="data:image/jpeg;base64,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" alt="MVM Mankapur school gallery photo 1" loading="lazy">
+        <figcaption>Campus Memory 01</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq4qweq8t6CMKqGX77XTIY9nT6a3YsRUHN3KosJoIJKg&s" alt="MVM Mankapur school gallery photo 2" loading="lazy">
+        <figcaption>Campus Memory 02</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtOl6cZp7aQ5CWGKssTKg8nUOzLgcxw7q2--ST4xyhTQ&s=10" alt="MVM Mankapur school gallery photo 3" loading="lazy">
+        <figcaption>Campus Memory 03</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxfan1n5x3WVOSup8DLBlbIowx907ZWWvVILLvjabPHw&s=10" alt="MVM Mankapur school gallery photo 4" loading="lazy">
+        <figcaption>Campus Memory 04</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0Yno2y1ZzwJAz2udSM_QSXsJcGGSF4xPVmkpfNZGrOA&s=10" alt="MVM Mankapur school gallery photo 5" loading="lazy">
+        <figcaption>Campus Memory 05</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ16TDD5p3eKGNMNYo3DC6o5I3Mnyec-s4nmY2nkEk5Q&s=10" alt="MVM Mankapur school gallery photo 6" loading="lazy">
+        <figcaption>Campus Memory 06</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaGRNBXXFBst6BV_dO_K2hzxUEwPklHO5nuILQ4DN1Tw&s=10" alt="MVM Mankapur school gallery photo 7" loading="lazy">
+        <figcaption>Campus Memory 07</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6VkaisbDrQyiNWUhXSoPAq65cZf6nwv0W-G8eT3UZaA&s=10" alt="MVM Mankapur school gallery photo 8" loading="lazy">
+        <figcaption>Campus Memory 08</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBUs6j3QeJLh8ZVl4bskoSowXhKEs-7Ay1uJpjZVt7Jg&s" alt="MVM Mankapur school gallery photo 9" loading="lazy">
+        <figcaption>Campus Memory 09</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpYAC-KzzN0a0MVPhz0ozLIJjZGBsnOu20qYqyPpTRyA&s=10" alt="MVM Mankapur school gallery photo 10" loading="lazy">
+        <figcaption>Campus Memory 10</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO9yIINv_46KSkhbt_Ho90ri7nmjBCMXBAnKJXO5HCIQ&s" alt="MVM Mankapur school gallery photo 11" loading="lazy">
+        <figcaption>Campus Memory 11</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb3Qyat_ZiwHrifYWu4sgYOHgmqNepLNwq93_VQLuvlw&s=10" alt="MVM Mankapur school gallery photo 12" loading="lazy">
+        <figcaption>Campus Memory 12</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScla1AvF2-d4SkylZjQgBlH9eakn2wN_9ARCdFvh9Hig&s" alt="MVM Mankapur school gallery photo 13" loading="lazy">
+        <figcaption>Campus Memory 13</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSou7bIS8D_SFwVsHhPxThZRtaBpZsnbw6NcTtPyDQWyw&s" alt="MVM Mankapur school gallery photo 14" loading="lazy">
+        <figcaption>Campus Memory 14</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYAgKtfZwD_alHvnmn92XkDJmH54NQX5zfGVwh35V1OQ&s=10" alt="MVM Mankapur school gallery photo 15" loading="lazy">
+        <figcaption>Campus Memory 15</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoQQuVBDxPgXlmEtLtM3vi3PRtcs0fPuFA5bDObSpYHw&s" alt="MVM Mankapur school gallery photo 16" loading="lazy">
+        <figcaption>Campus Memory 16</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJIkUVeKDVXqdFSbgM6wD7RHvTQQUTXx6Vgjw0lOKDzQ&s=10" alt="MVM Mankapur school gallery photo 17" loading="lazy">
+        <figcaption>Campus Memory 17</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnHPZ30WGWQrRhLBhgQTJdLdJMj_8-yk5A0_KEXIzurw&s" alt="MVM Mankapur school gallery photo 18" loading="lazy">
+        <figcaption>Campus Memory 18</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKDlLXf2t3Zch_eQaFgxB1gLat8UupNmMqJ34Y9zTXQQ&s=10" alt="MVM Mankapur school gallery photo 19" loading="lazy">
+        <figcaption>Campus Memory 19</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUbGyUBcZXarkxXTKISX_iOWdHkquakMXdMF1jlik7NQ&s=10" alt="MVM Mankapur school gallery photo 20" loading="lazy">
+        <figcaption>Campus Memory 20</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzOtw5zkh2gV2ohDOy3u6dgdus_RMx-DhVwirndCq6pA&s=10" alt="MVM Mankapur school gallery photo 21" loading="lazy">
+        <figcaption>Campus Memory 21</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_6caqgEM68bXdRMk88GaqWAXbA9oGNEr1Zhu1Tol0sQ&s=10" alt="MVM Mankapur school gallery photo 22" loading="lazy">
+        <figcaption>Campus Memory 22</figcaption>
+      </figure>
+
+      <figure class="gallery-card">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUEY9PXDBbMw0ojOtxlvxU5H5SPId1nt5pUqBzwLM&s=10" alt="MVM Mankapur school gallery photo 23" loading="lazy">
+        <figcaption>Campus Memory 23</figcaption>
+      </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="register">
+      <div class="container">
+        <div class="section-head">
+          <span>Get Connected</span>
+          <h2>Registration Form</h2>
+          <p>Fill in your basic details below.</p>
+        </div>
+        <div class="panel form-wrap">
+          <form onsubmit="submitForm(event)">
+            <fieldset>
+              <legend>Personal Details</legend>
+              <div class="form-grid">
+                <div>
+                  <label for="firstName">First name</label>
+                  <input id="firstName" type="text" name="firstName" required>
+                </div>
+                <div>
+                  <label for="lastName">Last name</label>
+                  <input id="lastName" type="text" name="lastName" required>
+                </div>
+                <div>
+                  <label for="age">Age</label>
+                  <input id="age" type="number" name="age" min="1" max="100" required>
+                </div>
+                <div>
+                  <label for="phone">Mobile Number <span style="font-weight:500;color:#94a3b8">(Optional)</span></label>
+                  <input id="phone" type="tel" name="phone" inputmode="numeric"
+                         pattern="[0-9]{10}" maxlength="10"
+                         placeholder="10-digit mobile number">
+                </div>
+              </div>
+              <div style="margin-top:18px">
+                <label>Gender</label>
+                <label class="choice"><input type="radio" name="gender" value="male" required> Male</label>
+                <label class="choice"><input type="radio" name="gender" value="female"> Female</label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Info</legend>
+              <p style="color:#64748b;margin-bottom:10px">Choose any option(s)</p>
+              <label class="choice"><input type="checkbox" name="info" value="student of MVM"> Student of MVM</label>
+              <label class="choice"><input type="checkbox" name="info" value="student of other school"> Student of other school</label>
+              <label class="choice"><input type="checkbox" name="info" value="teacher"> Teacher</label>
+              <label class="choice"><input type="checkbox" name="info" value="other"> Other</label>
+            </fieldset>
+
+            <div class="submit-row">
+              <button class="submit" type="submit">Submit Form</button>
+              <button class="reset" type="reset">Reset Form</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Created by <strong>Piyush &amp; Kuldeep</strong> of MVM Mankapur</p>
+      <p style="margin-top:6px;font-size:.85rem">MVM Senior Secondary School Mankapur near ITI Gonda</p>
+    </div>
+  </footer>
+
+  <script>
+    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyfYTS3HuKc-0qfyZkfmdsLs7LpjidisSq0puMKKpISiNQx8fA1ptFD5PaKcRYXjQi3/exec";
+
+    async function submitForm(event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const submitButton = form.querySelector(".submit");
+      const formData = new FormData(form);
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Submitting...";
+
+      try {
+        await fetch(GOOGLE_SHEET_URL, {
+          method: "POST",
+          body: formData,
+          mode: "no-cors"
+        });
+
+        alert("Registration submitted successfully!");
+        form.reset();
+      } catch (error) {
+        console.error(error);
+        alert("Something went wrong. Please try again.");
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = "Submit Form";
+      }
+    }
+  </script>
+</body>
+</html>
